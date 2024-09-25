@@ -18,7 +18,7 @@ docker compose down
 docker compose build && docker compose up -d
 
 # Ensure mariadb pod is ready to connect
-docker run --rm --net wordpress-base_default amazeeio/dockerize dockerize -wait tcp://mariadb:3306 -timeout 1m
+docker run --rm --net demo-bree-wordpress_default amazeeio/dockerize dockerize -wait tcp://mariadb:3306 -timeout 1m
 ```
 
 Verification commands
@@ -29,22 +29,22 @@ Run the following commands to validate things are rolling as they should.
 ```bash
 # Should be able to site install via wp-cli
 docker compose exec -T cli bash -c "composer install"
-docker compose exec -T cli bash -c "wp core install --allow-root --url=wordpress-base.docker.amazee.io --title=\'Wordpress-site-install\' --admin_user=admin --admin_email=admin@example.com"
+docker compose exec -T cli bash -c "wp core install --allow-root --url=demo-bree-wordpress.docker.amazee.io --title=\'Wordpress-site-install\' --admin_user=admin --admin_email=admin@example.com"
 docker compose exec -T cli bash -c "wp theme activate twentytwentyfour"
 docker compose exec -T cli bash -c "wp cache flush"
 docker compose exec -T cli bash -c "wp core verify-checksums" | grep "Success"
 
 # Should have all the services we expect
-docker ps --filter label=com.docker.compose.project=wordpress-base | grep Up | grep wordpress-base-nginx-1
-docker ps --filter label=com.docker.compose.project=wordpress-base | grep Up | grep wordpress-base-mariadb-1
-docker ps --filter label=com.docker.compose.project=wordpress-base | grep Up | grep wordpress-base-php-1
-docker ps --filter label=com.docker.compose.project=wordpress-base | grep Up | grep wordpress-base-cli-1
+docker ps --filter label=com.docker.compose.project=demo-bree-wordpress | grep Up | grep demo-bree-wordpress-nginx-1
+docker ps --filter label=com.docker.compose.project=demo-bree-wordpress | grep Up | grep demo-bree-wordpress-mariadb-1
+docker ps --filter label=com.docker.compose.project=demo-bree-wordpress | grep Up | grep demo-bree-wordpress-php-1
+docker ps --filter label=com.docker.compose.project=demo-bree-wordpress | grep Up | grep demo-bree-wordpress-cli-1
 
 # Should ssh against the cli container by default
 docker compose exec -T cli bash -c "env | grep LAGOON=" | grep cli
 
 # Should have the correct environment set
-docker compose exec -T cli bash -c "env" | grep LAGOON_ROUTE | grep wordpress-base.docker.amazee.io
+docker compose exec -T cli bash -c "env" | grep LAGOON_ROUTE | grep demo-bree-wordpress.docker.amazee.io
 docker compose exec -T cli bash -c "env" | grep LAGOON_ENVIRONMENT_TYPE | grep development
 
 # Should be running PHP 8
