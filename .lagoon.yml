@@ -20,3 +20,17 @@ environments:
         schedule: "H * * * *"
         command: wp cron event run --due-now --path=`/app/web/`
         service: cli
+
+lagoon-sync:
+  mariadb:
+    config:
+      hostname: "${DATABASE_HOST:-db}"
+      username: "${DATABASE_USERNAME:-db}"
+      password: "${DATABASE_PASSWORD:-db}"
+      port: "${DATABASE_PORT:-3306}"
+      database: "${DATABASE_DATABASE:-db}"
+  files:
+    config:
+      #sync-directory: "/app/public/fileadmin/user_upload"
+      #sync-directory: "public/fileadmin/"
+      sync-directory: "web/content/uploads"     
