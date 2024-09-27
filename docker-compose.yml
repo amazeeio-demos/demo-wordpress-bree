@@ -1,6 +1,6 @@
 x-lagoon-project:
   # Lagoon project name (leave `&lagoon-project` when you edit this)
-  &lagoon-project wordpress-example
+  &lagoon-project demo-bree-wordpress
 
 x-volumes:
   &default-volumes
