@@ -1,6 +1,6 @@
 docker-compose-yaml: docker-compose.yml
 
-project: wordpress-example
+project: demo-bree-wordpress
 
 tasks:
   post-rollout:
