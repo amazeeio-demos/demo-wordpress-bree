@@ -11,5 +11,5 @@ source /lagoon/entrypoints/55-generate-env.sh
 echo "Done loading lagoon environment"
 
 if [ -z "$HTTP_HOST" ]; then
-	export HTTP_HOST=$LAGOON_ROUTE
+	export HTTP_HOST=$LAGOON_DOMAIN
 fi
