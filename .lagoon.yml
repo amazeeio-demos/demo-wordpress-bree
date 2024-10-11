@@ -8,31 +8,12 @@ tasks:
         # TODO: This task is for demo purposes only - Best remove this when you going to use this as production instance
         name: install wordpress if not installed
         when: withDefault("LAGOON_GIT_BRANCH", "nobranch") == "main"
-        command: |
-          if [ `wp core is-installed` -ne 0 ]; then
-	    cd web
-
-	    wp core install \
-              --url=$LAGOON_ROUTE \
-              --title="amazee.io wordpress-example - $BRANCH" \
-              --admin_user=admin \
-              --admin_email=admin@example.com \
-              --skip-email \
-              --allow-root
-	  else
-		echo "WordPress is installed"
-          fi
+        command: /app/lagoon/scripts/install_wp.sh
         service: cli
     - run:
         name: IF no wordpress installed and we are not main branch, sync from main branch
         when: withDefault("LAGOON_GIT_BRANCH", "nobranch") != "main"
-        command: |
-          if [ `wp core is-installed` -eq 0 ]; then
-		echo "Syncing the Main database for non-prod environment"
-                lagoon-sync sync mariadb -p demo-bree-wordpress -e main -t "$LAGOON_GIT_BRANCH" --verbose -y
-	  else
-		echo "WordPress is installed"
-          fi
+        command: /app/lagoon/scripts/scaffold_non_prod_from_prod.sh
         service: cli
 
 
