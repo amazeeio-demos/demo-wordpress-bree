@@ -8,10 +8,19 @@ tasks:
         # TODO: This task is for demo purposes only - Best remove this when you going to use this as production instance
         name: install wordpress if not installed
         command: |
-          if ! $(cd web && wp core is-installed); then
+          if [[ "$LAGOON_GIT_BRANCH" == "main" ]] && ! $(cd web && wp core is-installed); then
             cd web && wp core install --url=$LAGOON_ROUTE --title="amazee.io wordpress-example - $BRANCH" --admin_user=admin --admin_email=admin@example.com --skip-email --allow-root
           fi
         service: cli
+    - run:
+        name: IF no wordpress installed and we are not main branch, sync from main branch
+        command: |
+            if [[ "$LAGOON_GIT_BRANCH" != "main" ]] && ! $(cd web && wp core is-installed); then
+                lagoon-sync sync mariadb -p demo-bree-wordpress -e main -t "$LAGOON_GIT_BRANCH" --verbose
+            fi
+        service: cli
+        shell: bash
+
 
 environments:
   master:
