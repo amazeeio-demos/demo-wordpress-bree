@@ -21,8 +21,8 @@
 // Sort out the HTTP_HOST and other issues
 if (defined( 'WP_CLI' ) && WP_CLI && ! isset($_SERVER['HTTP_HOST'])) { 
   $_SERVER['HTTP_HOST'] = '';
-  if(isset(getenv('LAGOON_DOMAIN'))) {
-    $_SERVER['HTTP_HOST'] = $LAGOON_DOMAIN;
+  if(getenv('LAGOON_DOMAIN')) {
+    $_SERVER['HTTP_HOST'] = getenv('LAGOON_DOMAIN');
   }
 }
 
