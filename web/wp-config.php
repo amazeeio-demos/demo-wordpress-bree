@@ -18,6 +18,19 @@
  * @package WordPress
  */
 
+// Sort out the HTTP_HOST and other issues
+if (defined( 'WP_CLI' ) && WP_CLI && ! isset($_SERVER['HTTP_HOST'])) { 
+  $_SERVER['HTTP_HOST'] = '';
+  if(isset(getenv('LAGOON_DOMAIN'))) {
+    $_SERVER['HTTP_HOST'] = $LAGOON_DOMAIN;
+  }
+}
+
+if (defined( 'WP_CLI' ) && WP_CLI && ! isset($_SERVER['SERVER_PORT'])) 
+{
+  $_SERVER['SERVER_PORT'] = '';
+}
+
 // ** MySQL settings - You can get this info from your web host ** //
 /** The name of the database for WordPress */
 define('DB_NAME', getenv('MARIADB_DATABASE') ?: 'lagoon');
