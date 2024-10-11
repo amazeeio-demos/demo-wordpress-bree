@@ -17,5 +17,7 @@ RUN composer install --no-dev --prefer-dist
 
 COPY . /app
 
+COPY lagoon/wp-entry-point.sh /lagoon/entrypoints/99-wp-entry-point.sh
+
 ENV WEBROOT=web
 ENV PAGER=less
